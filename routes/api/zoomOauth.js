@@ -87,7 +87,10 @@ router.get('/oauth_users', async (req, res) => {
     return res.json(users);
   } catch (error) {
     return httpErrorHandler({
-      error, res, customMessage: ZOOM_FETCH_OAUTH_USERS_ERROR, logErrorPath: logHttpErrorPath(req),
+      error,
+      res,
+      customMessage: ZOOM_FETCH_OAUTH_USERS_ERROR,
+      logErrorPath: logHttpErrorPath(req),
     });
   }
 });
