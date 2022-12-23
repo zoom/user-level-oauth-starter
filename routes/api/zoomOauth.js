@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
       const existingUser = await getCurrentUser({ zoom_user_id });
 
       // Check if user exists before creating a new entry in database
-      if (!existingUser.length) {
+      if (Object.keys(existingUser).length === 0) {
         await createNewUser({
           zoom_user_id,
           access_token,
