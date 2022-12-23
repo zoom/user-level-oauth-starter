@@ -1,92 +1,86 @@
 # User Level OAuth Starter
 
+This boilerplate app creates a functional starting point for building user level Oauth applications with Zoom. It demonstrates solutions for managing user tokens and making Zoom REST API requests on their behalf. It also refreshes access tokens automatically by use of an [express middleware](https://expressjs.com/en/guide/using-middleware.html).
 
+This app utilizes [Express](https://expressjs.com/) for the server, [MySQL](https://www.mysql.com/) for the database ([Node MySQl](https://github.com/mysqljs/mysql)), and [Axios](https://axios-http.com/docs/intro) for http requests. 
 
-## Getting started
+## Getting Started
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+1. Create a user-level Oauth application in the [Zoom Marketplace](https://marketplace.zoom.us/). Please refer to our [public documentation](https://marketplace.zoom.us/docs/guides/build/oauth-app/) for further instructions on doing so.
+    * Keep the **Client ID** and **Client Secret** handy as we will need those soon.
+2. Add the following scopes:
+    * _/meeting:write_
+    * _/recording:write_
+    * _/user:read_
+    * _/user:write_
+    * _/webinar:write_
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+    **Note**: If you wish to add additional API endpoints to this application, you may need to add additional scopes.
 
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+3. Install [Node](https://nodejs.org/en/) and [Ngrok](https://ngrok.com/).
+4. [Create a MySQL database](https://dev.mysql.com/doc/refman/8.0/en/creating-database.html) with the following table schema. Graphical UI: [MySQL Workbench](https://www.mysql.com/products/workbench/).
 
 ```
-cd existing_repo
-git remote add origin https://git.zoom.us/sample-apps/user-level-oauth-starter.git
-git branch -M main
-git push -uf origin main
+CREATE TABLE `zoomCredential` (
+  `zoom_user_id` varchar(255) NOT NULL,
+  `access_token` text,
+  `refresh_token` text,
+  `email` varchar(255) DEFAULT NULL,
+  `last_updated` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`zoom_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
-## Integrate with your tools
+**Note**: Feel free to name your database and table whatever you'd like. Just ensure to fill in your environment variables correctly.
 
-- [ ] [Set up project integrations](https://git.zoom.us/sample-apps/user-level-oauth-starter/-/settings/integrations)
+5. Clone this repository and run `npm install` to download dependencies.
+6. Add environment variables as described in `.env.example`. 
 
-## Collaborate with your team
+`touch .env`
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```
+ZOOM_CLIENT_ID=
+ZOOM_CLIENT_SECRET=
+ZOOM_REDIRECT_URL=
+MYSQL_USER=
+MYSQL_HOST=
+MYSQL_DATABASE=
+MYSQL_PASSWORD=
+MYSQL_TABLE=
+MYSQL_CIPHER_KEY=
+```
 
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+**Note on env setup**:
+* **ZOOM_REDIRECT_URL**: run `ngrok http 8000` to create a tunnel to port 8000 and use the _forwarding URL_ for this value. Also add this value in your marketplace app configuration for the **App Credentials** -> **Redirect URL for OAuth** and **Add allow lists** text input values.
+* **MYSQL_CIPHER_KEY**, please use a 256 bit key which can be easily generated [here](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx).
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+With your ngrok tunnel active and applied to your marketplace application, use either of the following commands to start your express server:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+* **npm run dev** (w/ hot reloading)
+* **npm run start** (w/o hot reloading)
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Head to your marketplace Oauth application and click on the **Activation** tab. Either click the **Add** button or copy your **Add URL** into a new tab. If everything above was setup correctly, you should see a Zoom Oauth Allow page! Click **Allow** to authorize the Zoom Oauth handshake. Upon a `Zoom token retrieved` success response, you should have a newly registered user in your database!
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+To ensure this worked, send a `GET` request to http://localhost:8000/oauth_users to fetch the newly added user. This server provides the following APIs:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+| GET   | /                                   | Zoom Oauth Base (used only once per user activation) |
+|-------|-------------------------------------|------------------------------------------------------|
+| GET   | /oauth_users                        | List registered database users                       |
+| POST  | /:zoom_user_id/refresh_token        | Manually refresh access token                        |
+| GET   | /:zoom_user_id/get_token            | Retrieve access token from database                  |
+| POST  | /:zoom_user_id/revoke_token         | Revoke access token                                  |
+| GET   | /:zoom_user_id/meetings             | List meetings                                        |
+| GET   | /:zoom_user_id/webinars             | List webinars                                        |
+| POST  | /:zoom_user_id/meetings             | Create meeting                                       |
+| PATCH | /:zoom_user_id/meetings/:meeting_id | Update meeting                                       |
+| POST  | /:zoom_user_id/webinars             | Create webinar                                       |
+| PATCH | /:zoom_user_id/webinars/:webinar_id | Update webinar                                       |
+| GET   | /:zoom_user_id/recordings           | List cloud recordings                                |
 
-## License
-For open source projects, say how it is licensed.
+## Need help?
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+For help using this app or any of Zoom's APIs, head to our [Developer Forum](https://devforum.zoom.us/c/api-and-webhooks).
+
