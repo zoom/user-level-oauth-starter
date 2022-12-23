@@ -52,7 +52,9 @@ MYSQL_CIPHER_KEY=
 
 **Note on env setup**:
 * **ZOOM_REDIRECT_URL**: run `ngrok http 8000` to create a tunnel to port 8000 and use the _forwarding URL_ for this value. Also add this value in your marketplace app configuration for the **App Credentials** -> **Redirect URL for OAuth** and **Add allow lists** text input values.
+
 ![Adding ngrok forwarding URL](/images/ngrok_marketplace.png)
+
 * **MYSQL_CIPHER_KEY**, please use a 256 bit key which can be easily generated [here](https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx).
 
 ## Usage
@@ -63,6 +65,7 @@ With your ngrok tunnel active and applied to your marketplace application, use e
 * **npm run start** (w/o hot reloading)
 
 Head to your marketplace Oauth application and click on the **Activation** tab. Either click the **Add** button or copy your **Add URL** into a new tab.
+
 ![Adding App](/images/add_app.png)
 
 If everything above was setup correctly, you should see a Zoom Oauth Allow page! Click **Allow** to authorize the Zoom Oauth handshake. Upon a `Zoom token retrieved` success response, you should have a newly registered user in your database!
