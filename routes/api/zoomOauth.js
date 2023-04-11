@@ -95,7 +95,7 @@ router.get('/oauth_users', async (req, res) => {
   }
 });
 
-// https://marketplace.zoom.us/docs/guides/auth/oauth/#refreshing-an-access-token
+// https://developers.zoom.us/docs/integrations/oauth/#refreshing-an-access-token
 router.post('/:zoom_user_id/refresh_token', withCurrentUser, async (req, res) => {
   const { currentUser } = req;
 
@@ -134,7 +134,7 @@ router.get('/:zoom_user_id/get_token', withCurrentUser, async (req, res) => {
   }
 });
 
-// https://marketplace.zoom.us/docs/guides/auth/oauth/#revoking-an-access-token
+// https://developers.zoom.us/docs/integrations/oauth/#revoking-an-access-token
 router.post('/:zoom_user_id/revoke_token', withCurrentUser, async (req, res) => {
   const { currentUser } = req;
 
