@@ -6,7 +6,7 @@ This app utilizes [Express](https://expressjs.com/) for the server, [MySQL](http
 
 ## Getting Started
 
-1. Create a user-level Oauth application in the [Zoom Marketplace](https://marketplace.zoom.us/). Please refer to our [public documentation](https://marketplace.zoom.us/docs/guides/build/oauth-app/) for further instructions on doing so.
+1. Create a user-level Oauth application in the [Zoom Marketplace](https://marketplace.zoom.us/). Please refer to our [public documentation](https://developers.zoom.us/docs/integrations/create/) for further instructions on doing so.
     * Keep the **Client ID** and **Client Secret** handy as we will need those soon.
 2. Add the following scopes:
     * _/meeting:write_
