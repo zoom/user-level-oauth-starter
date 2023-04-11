@@ -14,7 +14,7 @@ const router = express.Router();
 
 /**
  * List meetings
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/meetings
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetings
  */
 router.get('/:zoom_user_id/meetings', withCurrentUser, async (req, res) => {
   const { headerConfig, params, query } = req;
@@ -40,7 +40,7 @@ router.get('/:zoom_user_id/meetings', withCurrentUser, async (req, res) => {
 
 /**
  * List webinars
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/webinars
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/webinars
  */
 router.get('/:zoom_user_id/webinars', withCurrentUser, async (req, res) => {
   const { headerConfig, params, query } = req;
@@ -66,7 +66,7 @@ router.get('/:zoom_user_id/webinars', withCurrentUser, async (req, res) => {
 
 /**
  * Create a meeting
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/meetingCreate
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingCreate
  */
 router.post('/:zoom_user_id/meetings', withCurrentUser, async (req, res) => {
   const { headerConfig, params, body } = req;
@@ -91,7 +91,7 @@ router.post('/:zoom_user_id/meetings', withCurrentUser, async (req, res) => {
 
 /**
  * Update a meeting
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/meetingUpdate
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingUpdate
  */
 router.patch('/:zoom_user_id/meetings/:meeting_id', withCurrentUser, async (req, res) => {
   const { headerConfig, params, body } = req;
@@ -117,7 +117,7 @@ router.patch('/:zoom_user_id/meetings/:meeting_id', withCurrentUser, async (req,
 
 /**
  * Create a webinar
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/webinarCreate
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/webinarCreate
  */
 router.post('/:zoom_user_id/webinars', withCurrentUser, async (req, res) => {
   const { headerConfig, body, params } = req;
@@ -143,7 +143,7 @@ router.post('/:zoom_user_id/webinars', withCurrentUser, async (req, res) => {
 
 /**
  * Update a webinar
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/webinarUpdate
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/webinarUpdate
  */
 router.patch('/:zoom_user_id/webinars/:webinar_id', withCurrentUser, async (req, res) => {
   const { headerConfig, params, body } = req;
@@ -169,7 +169,7 @@ router.patch('/:zoom_user_id/webinars/:webinar_id', withCurrentUser, async (req,
 
 /**
  * List all recordings
- * https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/recordingsList
+ * https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/recordingsList
  */
 router.get('/:zoom_user_id/recordings', withCurrentUser, async (req, res) => {
   const { headerConfig, params, query } = req;
